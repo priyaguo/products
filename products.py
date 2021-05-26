@@ -1,16 +1,24 @@
-#讀取檔案
-#split 切割
+import os #operating system
+
 products = []
-with open('products.csv', 'r') as f:
-    for line in f:
-        if '商品,價格' in line:
-            continue  #繼續for迴圈
-        name, price = line.strip().split(',')
-        products.append([name, price])
-print(products)
+if os.path.isfile('products.csv'): #檢查檔案在不在
+    print('yeah! 找到檔案了!')
+
+    #讀取檔案
+    #split 切割
+    products = []
+    with open('products.csv', 'r') as f:
+        for line in f:
+            if '商品,價格' in line:
+                continue  #繼續for迴圈
+            name, price = line.strip().split(',')
+            products.append([name, price])
+    print(products)
+
+else:
+    print('找不到檔案......')
 
 #二維清單
-products = []
 while True:
     name = input('請輸入商品名稱:')
     if name == 'q':
