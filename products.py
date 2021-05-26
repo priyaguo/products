@@ -1,49 +1,52 @@
 import os #operating system
 
-products = []
-if os.path.isfile('products.csv'): #檢查檔案在不在
-    print('yeah! 找到檔案了!')
-
-    #讀取檔案
-    #split 切割
+# 讀取檔案
+def read_file(filename):
     products = []
-    with open('products.csv', 'r') as f:
+    with open(filename, 'r') as f:
         for line in f:
             if '商品,價格' in line:
                 continue  #繼續for迴圈
             name, price = line.strip().split(',')
             products.append([name, price])
+    return products
+
+# 讓使用者輸入
+def user_input(products):
+    while True:
+        name = input('請輸入商品名稱:')
+        if name == 'q':
+            break
+        price = str(input('請輸入商品價格:'))
+        products.append([name, price])
     print(products)
+    return products
 
-else:
-    print('找不到檔案......')
-
-#二維清單
-while True:
-    name = input('請輸入商品名稱:')
-    if name == 'q':
-        break
-    price = str(input('請輸入商品價格:'))
-    #p = []
-    #p.append(name)
-    #p.append(price)
-    #products.append(p)
-    products.append([name, price])
-print(products)
-
-for p in products:
-    print(p[0],'的價格是',p[1])
-# print(products[0][0])
-# print(products[0][1])
-# print(products[1][0])
-# print(products[1][1])
-
-# r → read 讀取
-# w → write 寫入
-# open 打開檔案
-# f.write →寫入檔案
-with open('products.csv','w',encoding = 'BIG5') as f:
-    f.write('商品,價格' + '\n')
+# 印出所有購買紀錄
+def print_products(products):
     for p in products:
-        f.write(p[0] + ',' + str(p[1]) + '\n')
+        print(p[0],'的價格是',p[1])
 
+# 寫入檔案
+def write_file(filename, products):
+    with open(filename,'w',encoding = 'BIG5') as f:
+        f.write('商品,價格' + '\n')
+        for p in products:
+            f.write(p[0] + ',' + str(p[1]) + '\n')
+
+# main function
+def main():
+    filename = 'products.csv'
+    if os.path.isfile(filename): #檢查檔案在不在
+        print('yeah! 找到檔案了!')
+        products = read_file(filename)
+    else:
+        print('找不到檔案......')
+            
+    products = user_input(products)
+    print_products(products)
+    write_file(filename, products) 
+
+main()
+
+# refactor 重構
